@@ -1,0 +1,15 @@
+from flask import Blueprint
+from {{project_name}}.{{api_name}}.controllers import (
+    {{model_class}}Create, {{model_class}}Create, {{model_class}}Details)
+
+{{api_name}}_api = Blueprint('{{api_name}}_api', __name__)
+
+{{api_name}}_api.add_url_rule(
+    '/{{model_name}}s', view_func={{model_class}}List.as_view('{{model_name}}_list'), methods=['GET'])
+
+{{api_name}}_api.add_url_rule(
+    '/{{model_name}}s', view_func={{model_class}}Create.as_view('{{model_name}}_create'), methods=['POST'])
+
+{{api_name}}_api.add_url_rule(
+    '/{{model_name}}s/<int:{{model_name}}_id>', view_func={{model_class}}Details.as_view('{{model_name}}_details'))
+

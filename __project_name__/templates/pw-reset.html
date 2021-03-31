@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senha alterada</title>
+
+    <style>
+        .bar {
+            background-color: #149fc9;
+            width: 600px;
+            height: 60px;
+            margin: auto;
+
+        }
+
+        .logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 40px;
+        }
+
+        .msg {
+            text-align: center;
+            margin-top: 40px;
+            width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        p {
+            margin-bottom: 25px;
+        }
+
+        button {
+            background-color: #149fc9;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="bar"></div>
+
+    <img class="logo" src="" alt="logo">
+
+    <div class="msg">
+
+        <p style="color: #333333; font-size: 25px;"><b>Olá, {{name}}!</b></p>
+        <p style="color: #333333; font-size: 20px;"><b>Esqueceu sua senha?</b></p>
+        <p>Houve um pedido de alteração de senha na sua conta.</p>
+        <p>Se não tiver sido você, ignore este e-mail. Caso contrário, clique no botão abaixo para criar uma nova senha.
+        </p>
+        <button><a href="{{link}}?token={{token}}" target="_blank" style="color: #ffffff;text-decoration:none;">
+                <b>Nova Senha</b></a>
+        </button>
+        <p style="font-size: 14px;">Contato: <a target="_blank" href="mailto:your@mail.com"
+                style="font-size: 14px; color: #666666;">contato@contato.com</a></p>
+
+    </div>
+
+</body>
+
+</html>

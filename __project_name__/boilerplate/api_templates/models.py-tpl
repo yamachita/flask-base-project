@@ -1,0 +1,7 @@
+from {{project_name}}.models import BaseORMModel
+from {{project_name}}.extensions import db
+
+
+class {{model_class}}(BaseORMModel):
+
+    __tablename__ = '{{model_name}}s'

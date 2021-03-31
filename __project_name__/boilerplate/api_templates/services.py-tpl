@@ -1,0 +1,10 @@
+from {{project_name}}.{{model_name}}.models import {{model_class}}
+from {{project_name}}.{{model_name}}.schemas import {{model_class}}InputSchema, {{model_class}}UpdateSchema
+from {{project_name}}.base.services import BaseCRUDServices
+
+
+class {{model_class}}Services(BaseCRUDServices[{{model_class}}, {{model_class}}InputSchema, {{model_class}}UpdateSchema]):
+    ''' Implemente aqui os serviços'''
+
+
+{{model_name}}_services = {{model_class}}Services({{model_class}})

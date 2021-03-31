@@ -1,0 +1,102 @@
+from typing import List
+
+from flask import request, url_for
+from flask.views import MethodView
+
+from {{project_name}}.{{model_name}}.services import {{model_name}}_services
+from {{project_name}}.{{model_name}}.schemas import {{model_class}}InputSchema, {{model_class}}OutputSchema, {{model_class}}UpdateSchema
+
+from {{project_name}}.utils import filters
+from {{project_name}}.base.services import validate_input
+
+
+class {{model_class}}Create(MethodView):
+
+    decorators = []
+
+    @validate_input({{model_class}}InputSchema)
+    def post(self, data: {{model_class}}InputSchema):
+
+        {{model_name}} = {{model_name}}_services.create(data)
+
+        response = {{model_class}}OutputSchema.from_orm({{model_name}}).dict()
+
+        return response, 201
+
+
+class {{model_class}}Details(MethodView):  
+
+    decorators = []
+
+    def get(self, {{model_name}}_id: int):
+
+        {{model_name}} = {{model_name}}_services.get_by_id({{model_name}}_id)
+
+        output_schema = filters.get_schema(query_string=request.args,
+                                           schema_cls={{model_class}}OutputSchema)
+        output_fields = filters.get_fields(request.args)
+
+        response = output_schema.from_orm({{model_name}}).dict(include=output_fields)
+
+        return response, 200
+
+    @validate_input({{model_class}}InputSchema)
+    def put(self, {{model_name}}_id: int, data: {{model_class}}InputSchema):
+
+        {{model_name}} = {{model_name}}_services.get_by_id({{model_name}}_id)
+        {{model_name}} = {{model_name}}_services.update(model_instance={{model_name}}, data=data)
+
+        response = {{model_class}}OutputSchema.from_orm({{model_name}}).dict()
+
+        return response, 200
+
+    @validate_input({{model_class}}UpdateSchema)
+    def patch(self, {{model_name}}_id: int, data: {{model_class}}UpdateSchema):
+
+        {{model_name}} = {{model_name}}_services.get_by_id({{model_name}}_id)
+        {{model_name}} = {{model_name}}_services.update(model_instance={{model_name}}, data=data)
+
+        response = {{model_class}}OutputSchema.from_orm({{model_name}}).dict()
+
+        return response, 200
+
+    def delete(self, {{model_name}}_id: int):
+
+        {{model_name}} = {{model_name}}_services.get_by_id({{model_name}}_id)
+        {{model_name}}_services.delete({{model_name}})
+        return {}, 204
+
+
+class {{model_class}}sList(MethodView):
+
+    decorators = []
+
+    def get(self):
+
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 100, type=int)
+
+        output_schema = filters.get_schema(query_string=request.args,
+                                           schema_cls={{model_class}}OutputSchema)
+
+        output_fields = filters.get_fields(request.args)
+
+        {{model_name}}s, next_page, prev_page, total = {{model_name}}_services.get_all(
+            page=page, per_page=per_page)
+
+        if prev_page:
+            prev_page = url_for('{{model_name}}_api.{{model_name}}_list',
+                                _external=True, page=prev_page)
+        if next_page:
+            next_page = url_for('{{model_name}}_api.{{model_name}}_list',
+                                _external=True, page=next_page)
+
+        include = {'__root__': {'__all__': output_fields}} if output_fields else None
+
+        response = {'prev_page': prev_page,
+                    'next_page': next_page,
+                    'per_page': per_page,
+                    'total_items': total,
+                    '{{model_name}}s': output_schema.from_orm({{model_name}}s).dict(include=include)['__root__']}
+
+        return response, 200
